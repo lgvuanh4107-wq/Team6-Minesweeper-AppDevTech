@@ -12,14 +12,20 @@ namespace Domin
         public int Width { get; }
         public int Height { get; }
         public Cell[,] Cells { get; }
+        public int MineCount { get; }
+        public bool IsGameOver { get; private set; }
+        public bool IsWin { get; private set; }
+        private int revealedCount;
 
         private static readonly int[] dx = { -1, -1, -1, 0, 0, 1, 1, 1 };
         private static readonly int[] dy = { -1, 0, 1, -1, 1, -1, 0, 1 };
 
         public Board(int width, int height, int mineCount)
+          
         {
             Width = width;
             Height = height;
+            MineCount = mineCount;
             Cells = new Cell[width, height];
 
             for (int x = 0; x < width; x++)
@@ -29,6 +35,41 @@ namespace Domin
             PlaceMines(mineCount);
             CalculateAdjacentMines();
 
+        }
+        public void OpenCell(int x, int y)
+        {
+            if (IsGameOver || !IsInsideBoard(x, y))
+                return;
+
+            Cell cell = Cells[x, y];
+
+            if (cell.IsRevealed || cell.IsFlagged)
+                return;
+
+            cell.IsRevealed = true;
+            revealedCount++;
+
+            if (cell.IsMine)
+            {
+                IsGameOver = true;
+                return;
+            }
+
+            CheckWin();
+
+            if (cell.AdjacentMines == 0)
+            {
+                for (int i = 0; i < 8; i++)
+                    OpenCell(x + dx[i], y + dy[i]);
+            }
+        }
+        private void CheckWin()
+        {
+            if (revealedCount == Width * Height - MineCount)
+            {
+                IsGameOver = true;
+                IsWin = true;
+            }
         }
 
         private void PlaceMines(int mineCount)
