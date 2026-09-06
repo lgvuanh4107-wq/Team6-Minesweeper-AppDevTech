@@ -116,6 +116,15 @@ namespace Domin
         {
             return x >= 0 && x < Width && y >= 0 && y < Height;
         }
+        public void ToggleFlag(int x, int y)
+        {
+            if (IsGameOver || !IsInsideBoard(x, y))
+                return;
+
+            Cell cell = Cells[x, y];
+            if (!cell.IsRevealed)
+                cell.IsFlagged = !cell.IsFlagged;
+        }
     }
 }
     
