@@ -27,6 +27,7 @@ namespace Domin
                     Cells[x, y] = new Cell();
 
             PlaceMines(mineCount);
+            CalculateAdjacentMines();
 
         }
 
@@ -47,5 +48,34 @@ namespace Domin
                 }
             }
         }
+        private void CalculateAdjacentMines()
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    if (Cells[x, y].IsMine)
+                        continue;
+
+                    int count = 0;
+                    for (int i = 0; i < 8; i++)
+                    {
+                        int nx = x + dx[i];
+                        int ny = y + dy[i];
+
+                        if (IsInsideBoard(nx, ny) && Cells[nx, ny].IsMine)
+                            count++;
+                    }
+                    Cells[x, y].AdjacentMines = count;
+                }
+            }
+        }
+
+        private bool IsInsideBoard(int x, int y)
+        {
+            return x >= 0 && x < Width && y >= 0 && y < Height;
+        }
     }
 }
+    
+
