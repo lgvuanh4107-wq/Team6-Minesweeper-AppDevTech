@@ -1,0 +1,184 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="Brush.Mine" Color="#E8396B" />
+    <SolidColorBrush x:Key="Brush.Question" Color="#FFD76A" />
+    <SolidColorBrush x:Key="Brush.Num1" Color="#2A6FD6" />
+    <SolidColorBrush x:Key="Brush.Num2" Color="#2E9E4F" />
+    <SolidColorBrush x:Key="Brush.Num3" Color="#E8396B" />
+    <SolidColorBrush x:Key="Brush.Num4" Color="#7B4BC4" />
+    <SolidColorBrush x:Key="Brush.Num5" Color="#E67E22" />
+    <SolidColorBrush x:Key="Brush.Num6" Color="#128C8C" />
+    <SolidColorBrush x:Key="Brush.Num7" Color="#26344F" />
+    <SolidColorBrush x:Key="Brush.Num8" Color="#7A8196" />
+
+    <LinearGradientBrush x:Key="PrimaryBtnBg" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#A6E86B" Offset="0" />
+        <GradientStop Color="#4CBB4B" Offset="1" />
+    </LinearGradientBrush>
+
+    <Style x:Key="PrimaryButton" TargetType="Button">
+        <Setter Property="Height" Value="48"/>
+        <Setter Property="Padding" Value="16,0"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Background" Value="{StaticResource PrimaryBtnBg}"/>
+        <Setter Property="BorderBrush" Value="#1F7A3E"/>
+        <Setter Property="BorderThickness" Value="3,3,3,6"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="14">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Opacity" Value="0.9"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="RenderTransform">
+                                <Setter.Value>
+                                    <TranslateTransform Y="3"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <LinearGradientBrush x:Key="SecondaryBtnBg" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FFD76A" Offset="0" />
+        <GradientStop Color="#FFB347" Offset="1" />
+    </LinearGradientBrush>
+
+    <Style x:Key="SecondaryButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+        <Setter Property="Background" Value="{StaticResource SecondaryBtnBg}"/>
+        <Setter Property="BorderBrush" Value="#F2705E"/>
+        <Setter Property="Foreground" Value="#26344F"/>
+    </Style>
+
+    <LinearGradientBrush x:Key="BlueBtnBg" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#4FC3F7" Offset="0" />
+        <GradientStop Color="#2A6FD6" Offset="1" />
+    </LinearGradientBrush>
+
+    <Style x:Key="BlueButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+        <Setter Property="Background" Value="{StaticResource BlueBtnBg}"/>
+        <Setter Property="BorderBrush" Value="#2A6FD6"/>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+
+    <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+        <Setter Property="Background" Value="#E8396B"/>
+        <Setter Property="BorderBrush" Value="#8E1B4A"/>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+
+    <Style x:Key="IconButton" TargetType="Button" BasedOn="{StaticResource BlueButton}">
+        <Setter Property="Width" Value="40"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+        <Setter Property="FontSize" Value="18"/>
+    </Style>
+
+    <Style x:Key="CellHidden" TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource Brush.CellHidden}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.CellHiddenBorder}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Opacity" Value="0.9"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="CellRevealed" TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource Brush.CellRevealed}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.CellRevealedBorder}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Opacity" Value="0.9"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="StatBox" TargetType="Border">
+        <Setter Property="Background" Value="{DynamicResource Brush.Surface}"/>
+        <Setter Property="BorderBrush" Value="#F2705E"/>
+        <Setter Property="BorderThickness" Value="3"/>
+        <Setter Property="CornerRadius" Value="14"/>
+        <Setter Property="Height" Value="56"/>
+        <Setter Property="Padding" Value="8"/>
+    </Style>
+
+    <Style x:Key="CardPanel" TargetType="Border">
+        <Setter Property="Background" Value="{DynamicResource Brush.Surface}"/>
+        <Setter Property="BorderBrush" Value="#F2705E"/>
+        <Setter Property="BorderThickness" Value="3"/>
+        <Setter Property="CornerRadius" Value="14"/>
+        <Setter Property="Padding" Value="24"/>
+    </Style>
+
+    <Style x:Key="TitleText" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="28"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.TextPrimary}"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+    </Style>
+
+    <Style x:Key="BodyText" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brush.TextPrimary}"/>
+    </Style>
+
+    <Style x:Key="GameProgressBar" TargetType="ProgressBar">
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="Background" Value="#33000000"/>
+        <Setter Property="Foreground" Value="#4CBB4B"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ProgressBar">
+                    <Border Background="{TemplateBinding Background}" CornerRadius="10" ClipToBounds="True">
+                        <Grid>
+                            <Border x:Name="PART_Track"/>
+                            <Border x:Name="PART_Indicator" Background="{TemplateBinding Foreground}" HorizontalAlignment="Left" CornerRadius="10"/>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
