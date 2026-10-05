@@ -76,19 +76,19 @@ namespace Minesweeper.Views
                 if (BoardGrid.Children[0] is Button btn1)
                 {
                     btn1.SetResourceReference(Button.StyleProperty, "CellRevealed");
-                    btn1.SetResourceReference(Button.ForegroundProperty, "Brush.Num1");
+                    btn1.SetResourceReference(Button.ForegroundProperty, "Brush.Number1");
                     btn1.Content = "1";
                 }
                 if (BoardGrid.Children[1] is Button btn2)
                 {
                     btn2.SetResourceReference(Button.StyleProperty, "CellRevealed");
-                    btn2.SetResourceReference(Button.ForegroundProperty, "Brush.Num2");
+                    btn2.SetResourceReference(Button.ForegroundProperty, "Brush.Number2");
                     btn2.Content = "2";
                 }
                 if (BoardGrid.Children[cols + 1] is Button btn3)
                 {
                     btn3.SetResourceReference(Button.StyleProperty, "CellRevealed");
-                    btn3.SetResourceReference(Button.ForegroundProperty, "Brush.Num3");
+                    btn3.SetResourceReference(Button.ForegroundProperty, "Brush.Number3");
                     btn3.Content = "3";
                 }
             }

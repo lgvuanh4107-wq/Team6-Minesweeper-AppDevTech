@@ -8,13 +8,6 @@
         Background="{DynamicResource Brush.Background}"
         Foreground="{DynamicResource Brush.TextPrimary}">
     
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/Minesweeper;component/Resources/TempStyles.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
 
     <StackPanel Margin="16,24,16,24" MinWidth="560">
         <!-- Hàng 1: Menu, Độ khó, Controls -->
