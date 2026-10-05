@@ -30,13 +30,22 @@
             <Button Grid.Column="0" Content="&#xE72B;" FontFamily="Segoe MDL2 Assets"
                     Style="{DynamicResource DangerButton}" ToolTip="Về Menu" Margin="0,0,16,0" Width="48" Click="MenuButton_Click"/>
 
-            <Border Grid.Column="1" Background="White" CornerRadius="20" Padding="20,10" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="16,0">
-                <Border.Effect>
-                    <DropShadowEffect BlurRadius="10" Color="#4CBB4B" Opacity="0.3" ShadowDepth="3"/>
-                </Border.Effect>
-                <TextBlock x:Name="TitleTextBlock" Text="Độ khó" Style="{DynamicResource TitleText}"
-                           FontFamily="Segoe UI Black" FontWeight="Bold" Foreground="#26344F"/>
-            </Border>
+            <StackPanel Grid.Column="1" HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0">
+                <Border Background="#4FC3F7" CornerRadius="15" Padding="15,8">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="10" Color="#2A6FD6" Opacity="0.3" ShadowDepth="3"/>
+                    </Border.Effect>
+                    <TextBlock x:Name="txtPlayerName" Text="👤 Khách" Style="{DynamicResource TitleText}"
+                               FontFamily="Segoe UI Black" FontWeight="Bold" Foreground="White"/>
+                </Border>
+                <Border Background="White" CornerRadius="15" Padding="15,8" Margin="10,0,0,0">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="10" Color="#4CBB4B" Opacity="0.3" ShadowDepth="3"/>
+                    </Border.Effect>
+                    <TextBlock x:Name="txtDifficulty" Text="⭐ Dễ 9x9" Style="{DynamicResource TitleText}"
+                               FontFamily="Segoe UI Black" FontWeight="Bold" Foreground="#26344F"/>
+                </Border>
+            </StackPanel>
 
             <!-- StatBox số mìn (Màu Cam vàng) -->
             <Border Grid.Column="2" Style="{DynamicResource StatBoxOrange}" Margin="16,0,16,0">
@@ -55,13 +64,13 @@
             </Border>
 
             <!-- Nút Pause (Màu Xanh dương) -->
-            <Button x:Name="PauseButton" Grid.Column="4" Content="&#xE769;" FontFamily="Segoe MDL2 Assets"
-                    Style="{DynamicResource BlueButton}" Width="48" ToolTip="Tạm dừng"
-                    Margin="0,0,16,0" Click="PauseButton_Click"/>
+            <Button x:Name="PauseButton" Grid.Column="4" Style="{DynamicResource BlueButton}" Width="48" ToolTip="Tạm dừng" Margin="0,0,16,0" Click="PauseButton_Click">
+                <TextBlock FontSize="20" FontWeight="Bold" Foreground="White" Text="⏸" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Button>
 
-            <!-- Nút Restart (Xanh lá, có hình chuột chũi) -->
-            <Button x:Name="RestartButton" Grid.Column="5" Style="{DynamicResource PrimaryButton}" ToolTip="Chơi lại" Click="RestartButton_Click" Margin="0,0,16,0" Width="48" Padding="8">
-                <Image Stretch="Uniform">
+            <!-- Nút Restart (Xanh lá, hình chuột chũi) -->
+            <Button x:Name="RestartButton" Grid.Column="5" Style="{DynamicResource PrimaryButton}" ToolTip="Chơi lại" Click="RestartButton_Click" Margin="0,0,16,0" Width="48" Padding="4">
+                <Image Width="38" Height="38" Stretch="Uniform">
                     <Image.Style>
                         <Style TargetType="Image">
                             <Setter Property="Source" Value="pack://application:,,,/Resources/Images/mole_normal.png"/>

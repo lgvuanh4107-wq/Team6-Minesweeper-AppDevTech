@@ -37,7 +37,8 @@ namespace Minesweeper.Views
             _board.GameStarted += OnGameStarted;
             Closed += (_, _) => _timer.Stop();
 
-            TitleTextBlock.Text = $"Độ khó: {session.Difficulty.Name} {session.Difficulty.Width}x{session.Difficulty.Height} • {session.PlayerName}";
+            txtPlayerName.Text = $"👤 {session.PlayerName}";
+            txtDifficulty.Text = $"⭐ {session.Difficulty.Name} {session.Difficulty.Width}x{session.Difficulty.Height}";
 
             InitializeBoardLayout();
             UpdateStats();
@@ -251,12 +252,14 @@ namespace Minesweeper.Views
         // Xử lý mở bảng xếp hạng
         private void LeaderboardButton_Click(object sender, RoutedEventArgs e)
         {
-            bool wasPaused = _paused;
-            if (_board.IsStarted && !_board.IsOver && !wasPaused) PauseGame();
+            // bool wasPaused = _paused;
+            // if (_board.IsStarted && !_board.IsOver && !wasPaused) PauseGame();
 
-            new LeaderboardWindow(_session.Difficulty.Name) { Owner = this }.ShowDialog();
+            // new LeaderboardWindow(_session.Difficulty.Name) { Owner = this }.ShowDialog();
 
-            if (_board.IsStarted && !_board.IsOver && !wasPaused) ResumeGame();
+            // if (_board.IsStarted && !_board.IsOver && !wasPaused) ResumeGame();
+            
+            MessageBox.Show("Tính năng Bảng xếp hạng sử dụng Database đang được xây dựng và sẽ ra mắt ở giai đoạn sau!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         // Xử lý chiến thắng và lưu điểm
@@ -264,11 +267,13 @@ namespace Minesweeper.Views
         {
             RestartButton.Tag = "Win";
             string rankMsg = "";
+            /*
             if (_session.SaveScore)
             {
                 int? rank = LeaderboardService.AddScore(_session.PlayerName, _session.Difficulty.Name, ElapsedSeconds);
                 if (rank.HasValue) rankMsg = $"\nThứ hạng: {rank.Value}";
             }
+            */
 
             int res = GameDialog.Show(this, "Chiến thắng!", $"Thời gian: {ElapsedSeconds} giây{rankMsg}", "Chơi lại", "Xếp hạng", "Menu");
             if (res == 0)
@@ -278,10 +283,14 @@ namespace Minesweeper.Views
             }
             else if (res == 1)
             {
-                new LeaderboardWindow(_session.Difficulty.Name) { Owner = this }.ShowDialog();
+                // new LeaderboardWindow(_session.Difficulty.Name) { Owner = this }.ShowDialog();
+                MessageBox.Show("Tính năng Bảng xếp hạng sử dụng Database đang được xây dựng và sẽ ra mắt ở giai đoạn sau!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else if (res == 2)
             {
+                var entryWindow = new NameEntryWindow();
+                Application.Current.MainWindow = entryWindow;
+                entryWindow.Show();
                 Close();
             }
         }
@@ -313,6 +322,9 @@ namespace Minesweeper.Views
             }
             else if (result == 1)
             {
+                var entryWindow = new NameEntryWindow();
+                Application.Current.MainWindow = entryWindow;
+                entryWindow.Show();
                 Close();
             }
         }

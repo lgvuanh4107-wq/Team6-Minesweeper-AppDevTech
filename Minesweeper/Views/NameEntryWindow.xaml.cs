@@ -51,10 +51,11 @@ private void BtnPlayNoSave_Click(object sender, RoutedEventArgs e)
 
 private void BtnLeaderboard_Click(object sender, RoutedEventArgs e)
 {
-    Difficulty diff = GetSelectedDifficulty();
-    var lbWindow = new LeaderboardWindow(diff.Name);
-    lbWindow.Owner = this;
-    lbWindow.ShowDialog();
+    // Difficulty diff = GetSelectedDifficulty();
+    // var lbWindow = new LeaderboardWindow(diff.Name);
+    // lbWindow.Owner = this;
+    // lbWindow.ShowDialog();
+    MessageBox.Show("Tính năng Bảng xếp hạng sử dụng Database đang được xây dựng và sẽ ra mắt ở giai đoạn sau!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
 }
 
 private void BtnSound_Click(object sender, RoutedEventArgs e)
