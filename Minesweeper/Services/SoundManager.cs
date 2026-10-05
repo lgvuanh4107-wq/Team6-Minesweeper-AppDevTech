@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Media;
 
@@ -39,9 +40,9 @@ public static class SoundManager
                 _players[s] = player;
             }
         }
-        catch
+        catch (Exception ex)
         {
-            // Bỏ qua lỗi nếu file thiếu hoặc hỏng
+            Debug.WriteLine($"Error loading sound file '{fileName}': {ex.Message}");
         }
     }
 
@@ -56,9 +57,16 @@ public static class SoundManager
     {
         if (IsMuted) return;
         
-        if (_players.TryGetValue(s, out var player))
+        try
         {
-            player.Play();
+            if (_players.TryGetValue(s, out var player) && player != null)
+            {
+                player.Play();
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error playing sound '{s}': {ex.Message}");
         }
     }
 }
