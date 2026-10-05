@@ -1,43 +1,46 @@
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using Minesweeper.Models;
+using Minesweeper.Services;
 
 namespace Minesweeper.Views
 {
     public partial class MainWindow : Window
     {
-        private GameSession _session;
+        private readonly GameSession _session;
+        private readonly Board _board;
+        private Button[,] _buttons = null!;
+        private bool _endShown;
 
-        // Xóa hàm dựng không tham số hoặc để lại nếu WPF yêu cầu thiết kế, 
-        // nhưng ta chỉ dùng hàm dựng có GameSession.
+        private readonly record struct Pos(int X, int Y);
+
         public MainWindow(GameSession session)
         {
             InitializeComponent();
             _session = session;
+            _board = new Board(session.Difficulty);
 
-            // Cập nhật text tiêu đề
             TitleTextBlock.Text = $"Độ khó: {session.Difficulty.Name} {session.Difficulty.Width}x{session.Difficulty.Height} • {session.PlayerName}";
-            MineCountTextBlock.Text = session.Difficulty.Mines.ToString();
 
             InitializeBoardLayout();
+            UpdateStats();
         }
 
-        // Thiết lập kích thước ô và tạo lưới các nút dựa trên độ khó tạm thời
         private void InitializeBoardLayout()
         {
-            int cols = _session.Difficulty.Width;
-            int rows = _session.Difficulty.Height;
+            int cols = _board.Width;
+            int rows = _board.Height;
             double targetCellSize = 44; // Dễ: 44, Vừa: 36, Khó: 28
-            
+
             if (_session.Difficulty == Difficulty.Medium) targetCellSize = 36;
             else if (_session.Difficulty == Difficulty.Hard) targetCellSize = 28;
 
-            // Tự động giảm kích thước nếu bàn cờ vượt quá màn hình
             double screenWidth = SystemParameters.WorkArea.Width - 100;
-            double screenHeight = SystemParameters.WorkArea.Height - 300; // Trừ khoảng trống header
-            
+            double screenHeight = SystemParameters.WorkArea.Height - 300;
+
             double maxCellWidth = screenWidth / cols;
             double maxCellHeight = screenHeight / rows;
             double actualCellSize = Math.Min(targetCellSize, Math.Min(maxCellWidth, maxCellHeight));
@@ -47,9 +50,11 @@ namespace Minesweeper.Views
             BoardGrid.Width = actualCellSize * cols;
             BoardGrid.Height = actualCellSize * rows;
 
-            for (int r = 0; r < rows; r++)
+            _buttons = new Button[cols, rows];
+
+            for (int y = 0; y < rows; y++)
             {
-                for (int c = 0; c < cols; c++)
+                for (int x = 0; x < cols; x++)
                 {
                     Button cellBtn = new Button
                     {
@@ -57,41 +62,149 @@ namespace Minesweeper.Views
                         Height = actualCellSize,
                         Focusable = false,
                         Padding = new Thickness(0),
-                        FontSize = actualCellSize * 0.5
+                        FontSize = actualCellSize * 0.5,
+                        Tag = new Pos(x, y)
                     };
-                    
-                    cellBtn.SetResourceReference(Button.StyleProperty, "CellHidden");
+
+                    cellBtn.SetResourceReference(Control.StyleProperty, "CellHidden");
+                    cellBtn.Click += CellButton_Click;
+                    cellBtn.MouseRightButtonUp += CellButton_RightClick;
+
+                    _buttons[x, y] = cellBtn;
                     BoardGrid.Children.Add(cellBtn);
                 }
             }
-
-            ShowFakeCells(cols);
         }
 
-        // Hiện tạm vài ô đã mở để kiểm tra bố cục (sẽ xoá ở Bước 6)
-        private void ShowFakeCells(int cols)
+        // Click trái: mở ô, hoặc chord nếu ô đã mở có số
+        private void CellButton_Click(object sender, RoutedEventArgs e)
         {
-            if (BoardGrid.Children.Count > 12)
+            if (_board.IsOver) return;
+            var pos = (Pos)((Button)sender).Tag;
+            var cell = _board[pos.X, pos.Y];
+
+            List<(int X, int Y)> changed;
+            if (IsRevealed(cell))
             {
-                if (BoardGrid.Children[0] is Button btn1)
+                if (cell.AdjacentMines <= 0) return;
+                changed = _board.Chord(pos.X, pos.Y);
+            }
+            else
+            {
+                changed = _board.OpenCell(pos.X, pos.Y);
+            }
+
+            if (changed.Count > 0) PlaySfx("click");
+            AfterMove(changed);
+        }
+
+        // Click phải: cắm cờ / dấu hỏi
+        private void CellButton_RightClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+            if (_board.IsOver) return;
+            var pos = (Pos)((Button)sender).Tag;
+
+            var changed = _board.ToggleMark(pos.X, pos.Y);
+            if (changed.Count > 0) PlaySfx("flag");
+            AfterMove(changed);
+        }
+
+        private void AfterMove(List<(int X, int Y)> changed)
+        {
+            foreach (var (x, y) in changed) RefreshCell(x, y);
+            UpdateStats();
+
+            if (_board.IsOver && !_endShown)
+            {
+                _endShown = true;
+                if (_board.IsWin)
                 {
-                    btn1.SetResourceReference(Button.StyleProperty, "CellRevealed");
-                    btn1.SetResourceReference(Button.ForegroundProperty, "Brush.Number1");
-                    btn1.Content = "1";
+                    PlaySfx("win");
+                    // TODO (bước sau): hộp thoại thắng, lưu điểm
                 }
-                if (BoardGrid.Children[1] is Button btn2)
+                else
                 {
-                    btn2.SetResourceReference(Button.StyleProperty, "CellRevealed");
-                    btn2.SetResourceReference(Button.ForegroundProperty, "Brush.Number2");
-                    btn2.Content = "2";
-                }
-                if (BoardGrid.Children[cols + 1] is Button btn3)
-                {
-                    btn3.SetResourceReference(Button.StyleProperty, "CellRevealed");
-                    btn3.SetResourceReference(Button.ForegroundProperty, "Brush.Number3");
-                    btn3.Content = "3";
+                    ShowLoss();
+                    PlaySfx("explode");
+                    // TODO (bước sau): hộp thoại thua
                 }
             }
+        }
+
+        private static bool IsRevealed(Cell cell) => cell.State == CellState.Revealed;
+        private static bool IsFlagged(Cell cell) => cell.State == CellState.Flagged;
+        private static bool IsQuestion(Cell cell) => cell.State == CellState.Questioned;
+
+        private void RefreshCell(int x, int y)
+        {
+            var cell = _board[x, y];
+            var btn = _buttons[x, y];
+
+            if (IsRevealed(cell))
+            {
+                if (cell.IsMine)
+                    Render(btn, true, "💣", "Brush.Mine", "Segoe UI Emoji");
+                else if (cell.AdjacentMines > 0)
+                    Render(btn, true, cell.AdjacentMines.ToString(), $"Brush.Number{cell.AdjacentMines}", null);
+                else
+                    Render(btn, true, null, null, null);
+            }
+            else if (IsFlagged(cell))
+            {
+                Render(btn, false, "\uE7C1", "Brush.Mine", "Segoe MDL2 Assets");
+            }
+            else if (IsQuestion(cell))
+            {
+                Render(btn, false, "?", "Brush.Question", null);
+            }
+            else
+            {
+                Render(btn, false, null, null, null);
+            }
+        }
+
+        private static void Render(Button btn, bool revealed, string? text, string? foregroundKey, string? fontFamily)
+        {
+            btn.SetResourceReference(Control.StyleProperty, revealed ? "CellRevealed" : "CellHidden");
+            btn.Content = text;
+
+            if (fontFamily != null) btn.FontFamily = new FontFamily(fontFamily);
+            else btn.ClearValue(Control.FontFamilyProperty);
+
+            if (foregroundKey != null) btn.SetResourceReference(Control.ForegroundProperty, foregroundKey);
+            else btn.ClearValue(Control.ForegroundProperty);
+        }
+
+        private void ShowLoss()
+        {
+            foreach (var (x, y) in _board.GetMinesToExplode())
+                Render(_buttons[x, y], true, "💣", "Brush.Mine", "Segoe UI Emoji");
+
+            foreach (var (x, y) in _board.GetWrongFlags())
+                Render(_buttons[x, y], true, "✗", "Brush.Mine", null);
+
+            var hit = _board.LastHit;
+            _buttons[hit.X, hit.Y].SetResourceReference(Control.BackgroundProperty, "Brush.Mine");
+        }
+
+        private void UpdateStats()
+        {
+            MineCountTextBlock.Text = _board.FlagsRemaining.ToString();
+            ProgressTextBlock.Text = $"Dọn bàn cờ {_board.ProgressPercent}%";
+            GameProgressBarControl.Value = _board.ProgressPercent;
+        }
+
+        private static void PlaySfx(string name)
+        {
+            var s = name switch
+            {
+                "click" => Sound.Click,
+                "flag" => Sound.Flag,
+                "explode" => Sound.Explode,
+                _ => Sound.Win
+            };
+            SoundManager.Play(s);
         }
     }
 }
