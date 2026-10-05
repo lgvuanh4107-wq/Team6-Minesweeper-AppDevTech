@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Media;
 
@@ -29,12 +30,19 @@ public static class SoundManager
     // Tải âm thanh vào bộ nhớ từ file nếu file tồn tại
     private static void LoadSound(Sound s, string fileName)
     {
-        string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "Sounds", fileName);
-        if (File.Exists(path))
+        try
         {
-            var player = new SoundPlayer(path);
-            player.Load();
-            _players[s] = player;
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "Sounds", fileName);
+            if (File.Exists(path))
+            {
+                var player = new SoundPlayer(path);
+                player.Load();
+                _players[s] = player;
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error loading sound file '{fileName}': {ex.Message}");
         }
     }
 
@@ -49,9 +57,16 @@ public static class SoundManager
     {
         if (IsMuted) return;
         
-        if (_players.TryGetValue(s, out var player))
+        try
         {
-            player.Play();
+            if (_players.TryGetValue(s, out var player) && player != null)
+            {
+                player.Play();
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error playing sound '{s}': {ex.Message}");
         }
     }
 }
