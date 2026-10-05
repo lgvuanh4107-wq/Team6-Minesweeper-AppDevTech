@@ -6,9 +6,17 @@ namespace Minesweeper;
 
 public partial class App : Application
 {
-    // Bắt đầu chạy ứng dụng
+    // Bắt đầu chạy ứng dụng và khởi tạo dữ liệu
     protected override void OnStartup(StartupEventArgs e)
     {
-        new LeaderboardWindow("Dễ").ShowDialog();
+        base.OnStartup(e);
+
+        using (var db = new AppDbContext())
+        {
+            db.Database.EnsureCreated();
+        }
+
+        var testSession = new GameSession("VuAnhTest", Difficulty.Easy, true);
+        new MainWindow(testSession).Show();
     }
 }

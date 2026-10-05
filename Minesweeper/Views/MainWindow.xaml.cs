@@ -195,14 +195,113 @@ namespace Minesweeper.Views
                 if (_board.IsWin)
                 {
                     PlaySfx("win");
-                    // TODO (bước sau): hộp thoại thắng, gọi LeaderboardService.AddScore khi _session.SaveScore
+                    HandleWin();
                 }
                 else
                 {
-                    ShowLoss();
-                    PlaySfx("explode");
-                    // TODO (bước sau): hộp thoại thua
+                    _ = ShowLoseAnimationAsync();
                 }
+            }
+        }
+
+        // Hỏi xác nhận trước khi bỏ ván
+        private bool ConfirmAbandon()
+        {
+            if (_board.IsStarted && !_board.IsOver)
+            {
+                bool wasPaused = _paused;
+                if (!wasPaused) PauseGame();
+
+                int res = GameDialog.Show(this, "Xác nhận", "Bạn có chắc chắn muốn bỏ ván hiện tại?", "Đồng ý", "Hủy");
+                
+                if (res == 0) return true;
+                
+                if (!wasPaused) ResumeGame();
+                return false;
+            }
+            return true;
+        }
+
+        // Xử lý nút về menu
+        private void MenuButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ConfirmAbandon()) Close();
+        }
+
+        // Xử lý nút chơi lại
+        private void RestartButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ConfirmAbandon())
+            {
+                new MainWindow(_session).Show();
+                Close();
+            }
+        }
+
+        // Xử lý mở bảng xếp hạng
+        private void LeaderboardButton_Click(object sender, RoutedEventArgs e)
+        {
+            bool wasPaused = _paused;
+            if (_board.IsStarted && !_board.IsOver && !wasPaused) PauseGame();
+
+            new LeaderboardWindow(_session.Difficulty.Name) { Owner = this }.ShowDialog();
+
+            if (_board.IsStarted && !_board.IsOver && !wasPaused) ResumeGame();
+        }
+
+        // Xử lý chiến thắng và lưu điểm
+        private void HandleWin()
+        {
+            string rankMsg = "";
+            if (_session.SaveScore)
+            {
+                int? rank = LeaderboardService.AddScore(_session.PlayerName, _session.Difficulty.Name, ElapsedSeconds);
+                if (rank.HasValue) rankMsg = $"\nThứ hạng: {rank.Value}";
+            }
+
+            int res = GameDialog.Show(this, "Chiến thắng!", $"Thời gian: {ElapsedSeconds} giây{rankMsg}", "Chơi lại", "Xếp hạng", "Menu");
+            if (res == 0)
+            {
+                new MainWindow(_session).Show();
+                Close();
+            }
+            else if (res == 1)
+            {
+                new LeaderboardWindow(_session.Difficulty.Name) { Owner = this }.ShowDialog();
+            }
+            else if (res == 2)
+            {
+                Close();
+            }
+        }
+
+        // Hiển thị hiệu ứng nổ mìn lan truyền khi thua
+        private async System.Threading.Tasks.Task ShowLoseAnimationAsync()
+        {
+            var hit = _board.LastHit;
+            _buttons[hit.X, hit.Y].SetResourceReference(Control.BackgroundProperty, "Brush.Mine");
+            PlaySfx("explode");
+
+            foreach (var (x, y) in _board.GetMinesToExplode())
+            {
+                await System.Threading.Tasks.Task.Delay(50);
+                Render(_buttons[x, y], true, "💣", "Brush.Mine", "Segoe UI Emoji");
+            }
+
+            foreach (var (x, y) in _board.GetWrongFlags())
+            {
+                Render(_buttons[x, y], true, "✗", "Brush.Mine", null);
+            }
+
+            int result = GameDialog.Show(this, "Thất bại", "Bạn đã đạp trúng mìn!", "Chơi lại", "Menu");
+            if (result == 0)
+            {
+                new MainWindow(_session).Show();
+                Close();
+            }
+            else if (result == 1)
+            {
+                Close();
             }
         }
 
@@ -248,18 +347,6 @@ namespace Minesweeper.Views
 
             if (foregroundKey != null) btn.SetResourceReference(Control.ForegroundProperty, foregroundKey);
             else btn.ClearValue(Control.ForegroundProperty);
-        }
-
-        private void ShowLoss()
-        {
-            foreach (var (x, y) in _board.GetMinesToExplode())
-                Render(_buttons[x, y], true, "💣", "Brush.Mine", "Segoe UI Emoji");
-
-            foreach (var (x, y) in _board.GetWrongFlags())
-                Render(_buttons[x, y], true, "✗", "Brush.Mine", null);
-
-            var hit = _board.LastHit;
-            _buttons[hit.X, hit.Y].SetResourceReference(Control.BackgroundProperty, "Brush.Mine");
         }
 
         private void UpdateStats()

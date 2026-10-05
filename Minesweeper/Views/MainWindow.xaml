@@ -18,10 +18,11 @@
                 <ColumnDefinition Width="Auto"/> <!-- StatBox đồng hồ -->
                 <ColumnDefinition Width="Auto"/> <!-- Nút Pause -->
                 <ColumnDefinition Width="Auto"/> <!-- Nút restart -->
+                <ColumnDefinition Width="Auto"/> <!-- Nút xếp hạng -->
             </Grid.ColumnDefinitions>
 
             <Button Grid.Column="0" Content="&#xE72B;" FontFamily="Segoe MDL2 Assets"
-                    Style="{DynamicResource SecondaryButton}" ToolTip="Về Menu" Margin="0,0,16,0"/>
+                    Style="{DynamicResource SecondaryButton}" ToolTip="Về Menu" Margin="0,0,16,0" Click="MenuButton_Click"/>
 
             <TextBlock x:Name="TitleTextBlock" Grid.Column="1" Text="Độ khó" Style="{DynamicResource TitleText}"
                        VerticalAlignment="Center" HorizontalAlignment="Center"/>
@@ -49,7 +50,11 @@
 
             <!-- Nút Restart -->
             <Button Grid.Column="5" Content="&#xE72C;" FontFamily="Segoe MDL2 Assets"
-                    Style="{DynamicResource IconButton}" FontSize="20" ToolTip="Chơi lại"/>
+                    Style="{DynamicResource IconButton}" FontSize="20" ToolTip="Chơi lại" Click="RestartButton_Click" Margin="0,0,16,0"/>
+
+            <!-- Nút Xếp hạng -->
+            <Button Grid.Column="6" Content="&#xE82D;" FontFamily="Segoe MDL2 Assets"
+                    Style="{DynamicResource IconButton}" FontSize="20" ToolTip="Xếp hạng" Click="LeaderboardButton_Click"/>
         </Grid>
 
         <!-- Giữa: Bàn cờ + lớp phủ Pause -->
