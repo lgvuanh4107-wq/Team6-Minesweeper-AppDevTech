@@ -42,6 +42,7 @@ namespace Minesweeper.Views
             InitializeBoardLayout();
             UpdateStats();
             UpdateTimerText();
+            RestartButton.Tag = "Normal";
         }
 
         private void InitializeBoardLayout()
@@ -252,6 +253,7 @@ namespace Minesweeper.Views
         // Xử lý chiến thắng và lưu điểm
         private void HandleWin()
         {
+            RestartButton.Tag = "Win";
             string rankMsg = "";
             if (_session.SaveScore)
             {
@@ -278,6 +280,7 @@ namespace Minesweeper.Views
         // Hiển thị hiệu ứng nổ mìn lan truyền khi thua
         private async System.Threading.Tasks.Task ShowLoseAnimationAsync()
         {
+            RestartButton.Tag = "Lose";
             var hit = _board.LastHit;
             _buttons[hit.X, hit.Y].SetResourceReference(Control.BackgroundProperty, "Brush.Mine");
             PlaySfx("explode");

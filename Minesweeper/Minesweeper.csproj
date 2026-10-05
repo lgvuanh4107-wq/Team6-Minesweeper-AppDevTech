@@ -25,8 +25,8 @@
   </ItemGroup>
 
   <ItemGroup>
-   
     <Resource Include="Resources\Fonts\*.ttf" />
+    <Resource Include="Resources\Images\*.png" />
   </ItemGroup>
 
 </Project>

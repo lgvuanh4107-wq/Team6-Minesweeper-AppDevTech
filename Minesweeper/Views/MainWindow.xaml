@@ -8,9 +8,10 @@
         Background="{DynamicResource Brush.Background}"
         Foreground="{DynamicResource Brush.TextPrimary}">
 
-    <StackPanel Margin="16,24,16,24" MinWidth="560">
+    <StackPanel Margin="24" MinWidth="580">
         <!-- Thanh trên cùng -->
-        <Grid Margin="0,0,0,24">
+        <!-- Đã tăng Margin để không dính viền, căn chỉnh các nút thoáng hơn -->
+        <Grid Margin="16,0,16,32">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/> <!-- Nút về menu -->
                 <ColumnDefinition Width="*"/>    <!-- TitleText -->
@@ -21,45 +22,63 @@
                 <ColumnDefinition Width="Auto"/> <!-- Nút xếp hạng -->
             </Grid.ColumnDefinitions>
 
+            <!-- Nút Đỏ hồng: Đóng cửa sổ, Về menu -->
             <Button Grid.Column="0" Content="&#xE72B;" FontFamily="Segoe MDL2 Assets"
-                    Style="{DynamicResource SecondaryButton}" ToolTip="Về Menu" Margin="0,0,16,0" Click="MenuButton_Click"/>
+                    Style="{DynamicResource DangerButton}" ToolTip="Về Menu" Margin="0,0,16,0" Width="48" Click="MenuButton_Click"/>
 
             <TextBlock x:Name="TitleTextBlock" Grid.Column="1" Text="Độ khó" Style="{DynamicResource TitleText}"
                        VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
-            <!-- StatBox số mìn -->
-            <Border Grid.Column="2" Style="{DynamicResource StatBox}" Margin="0,0,16,0">
+            <!-- StatBox số mìn (Màu Cam vàng) -->
+            <Border Grid.Column="2" Style="{DynamicResource StatBoxOrange}" Margin="16,0,16,0">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="&#xE7C1;" FontFamily="Segoe MDL2 Assets" Foreground="{DynamicResource Brush.Mine}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <TextBlock Text="&#xE7C1;" FontFamily="Segoe MDL2 Assets" Foreground="{DynamicResource Brush.RedMain}" VerticalAlignment="Center" Margin="0,0,8,0" FontSize="20"/>
                     <TextBlock x:Name="MineCountTextBlock" Text="10" Style="{DynamicResource TitleText}" VerticalAlignment="Center"/>
                 </StackPanel>
             </Border>
 
-            <!-- StatBox đồng hồ -->
-            <Border Grid.Column="3" Style="{DynamicResource StatBox}" Margin="0,0,16,0">
+            <!-- StatBox đồng hồ (Màu Xanh dương) -->
+            <Border Grid.Column="3" Style="{DynamicResource StatBoxBlue}" Margin="0,0,16,0">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="&#xE916;" FontFamily="Segoe MDL2 Assets" Foreground="{DynamicResource Brush.TextPrimary}" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                    <TextBlock x:Name="TimerTextBlock" Text="00:00" Style="{DynamicResource TitleText}" VerticalAlignment="Center"/>
+                    <TextBlock Text="&#xE916;" FontFamily="Segoe MDL2 Assets" Foreground="{DynamicResource Brush.TextButton}" VerticalAlignment="Center" Margin="0,0,8,0" FontSize="20"/>
+                    <TextBlock x:Name="TimerTextBlock" Text="00:00" Foreground="{DynamicResource Brush.TextButton}" FontSize="28" FontWeight="Bold" VerticalAlignment="Center"/>
                 </StackPanel>
             </Border>
 
-            <!-- Nút Pause -->
+            <!-- Nút Pause (Màu Xanh dương) -->
             <Button x:Name="PauseButton" Grid.Column="4" Content="&#xE769;" FontFamily="Segoe MDL2 Assets"
-                    Style="{DynamicResource IconButton}" FontSize="20" ToolTip="Tạm dừng"
+                    Style="{DynamicResource BlueButton}" Width="48" ToolTip="Tạm dừng"
                     Margin="0,0,16,0" Click="PauseButton_Click"/>
 
-            <!-- Nút Restart -->
-            <Button Grid.Column="5" Content="&#xE72C;" FontFamily="Segoe MDL2 Assets"
-                    Style="{DynamicResource IconButton}" FontSize="20" ToolTip="Chơi lại" Click="RestartButton_Click" Margin="0,0,16,0"/>
+            <!-- Nút Restart (Xanh lá, có hình chuột chũi) -->
+            <Button x:Name="RestartButton" Grid.Column="5" Style="{DynamicResource PrimaryButton}" ToolTip="Chơi lại" Click="RestartButton_Click" Margin="0,0,16,0" Width="48" Padding="8">
+                <Image Stretch="Uniform">
+                    <Image.Style>
+                        <Style TargetType="Image">
+                            <Setter Property="Source" Value="pack://application:,,,/Resources/Images/mole_normal.png"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource AncestorType=Button}}" Value="Win">
+                                    <Setter Property="Source" Value="pack://application:,,,/Resources/Images/mole_win.png"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource AncestorType=Button}}" Value="Lose">
+                                    <Setter Property="Source" Value="pack://application:,,,/Resources/Images/mole_lose.png"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+            </Button>
 
-            <!-- Nút Xếp hạng -->
+            <!-- Nút Xếp hạng (Cam vàng) -->
             <Button Grid.Column="6" Content="&#xE82D;" FontFamily="Segoe MDL2 Assets"
-                    Style="{DynamicResource IconButton}" FontSize="20" ToolTip="Xếp hạng" Click="LeaderboardButton_Click"/>
+                    Style="{DynamicResource SecondaryButton}" Width="48" ToolTip="Xếp hạng" Click="LeaderboardButton_Click"/>
         </Grid>
 
         <!-- Giữa: Bàn cờ + lớp phủ Pause -->
-        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,24">
-            <Border Style="{DynamicResource CardPanel}">
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,32">
+            <!-- Ô cỏ / Ô đất được quản lý trong BoardGrid qua Style CellHidden và CellRevealed -->
+            <!-- Viền bàn cờ dùng CardPanel (Cam vàng) -->
+            <Border Style="{DynamicResource CardPanel}" BorderThickness="4" Padding="16">
                 <UniformGrid x:Name="BoardGrid" />
             </Border>
 
@@ -67,28 +86,28 @@
                     Background="{DynamicResource Brush.Background}" Visibility="Collapsed">
                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                     <TextBlock Text="Tạm dừng" Style="{DynamicResource TitleText}"
-                               HorizontalAlignment="Center" Margin="0,0,0,16"/>
+                               HorizontalAlignment="Center" Margin="0,0,0,24"/>
                     <Button x:Name="ResumeButton" Content="Tiếp tục" Style="{DynamicResource PrimaryButton}"
-                            HorizontalAlignment="Center" Click="ResumeButton_Click"/>
+                            HorizontalAlignment="Center" Click="ResumeButton_Click" MinWidth="120"/>
                 </StackPanel>
             </Border>
         </Grid>
 
         <!-- Dưới: Progress bar và nút âm thanh -->
-        <Grid>
+        <Grid Margin="16,0,16,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,16,0">
-                <TextBlock x:Name="ProgressTextBlock" Text="Dọn bàn cờ 0%" Style="{DynamicResource BodyText}" Margin="0,0,0,8"/>
+            <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,24,0">
+                <TextBlock x:Name="ProgressTextBlock" Text="Dọn bàn cờ 0%" Style="{DynamicResource BodyText}" FontWeight="Bold" Margin="0,0,0,8"/>
                 <ProgressBar x:Name="GameProgressBarControl" Style="{DynamicResource GameProgressBar}" Value="0"/>
             </StackPanel>
 
-            <!-- Nút bật/tắt âm thanh -->
+            <!-- Nút bật/tắt âm thanh (Xanh dương) -->
             <Button Grid.Column="1" Content="&#xE767;" FontFamily="Segoe MDL2 Assets"
-                    Style="{DynamicResource IconButton}" ToolTip="Bật/Tắt âm thanh" VerticalAlignment="Center"/>
+                    Style="{DynamicResource BlueButton}" Width="48" Height="48" ToolTip="Bật/Tắt âm thanh" VerticalAlignment="Center"/>
         </Grid>
     </StackPanel>
 </Window>

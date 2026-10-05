@@ -1,30 +1,46 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+    <!-- 1. HỆ THỐNG MÀU SẮC CHỦ ĐẠO -->
+    <SolidColorBrush x:Key="Brush.Background" Color="#D9F2F4"/>
+    <SolidColorBrush x:Key="Brush.TextPrimary" Color="#26344F"/>
+    <SolidColorBrush x:Key="Brush.TextButton" Color="#FFFFFF"/>
 
-  
+    <!-- Màu Xanh lá -->
     <Color x:Key="Color.GreenLight">#A6E86B</Color>
-    <Color x:Key="Color.Green">#4CBB4B</Color>
-    <Color x:Key="Color.GreenBorder">#1F7A3E</Color>
-    <Color x:Key="Color.GreenBase">#145A2B</Color>
-    
-    <Color x:Key="Color.YellowLight">#FFD76A</Color>
-    <Color x:Key="Color.Orange">#FFB347</Color>
-    <Color x:Key="Color.OrangeBorder">#F2705E</Color>
-  
-    <Color x:Key="Color.Mine">#E8396B</Color>
-    <Color x:Key="Color.MineBorder">#8E1B4A</Color>
-  
-    <Color x:Key="Color.BlueLight">#4FC3F7</Color>
-    <Color x:Key="Color.BlueBorder">#2A6FD6</Color>
+    <Color x:Key="Color.GreenMain">#4CBB4B</Color>
+    <SolidColorBrush x:Key="Brush.GreenMain" Color="#4CBB4B"/>
+    <SolidColorBrush x:Key="Brush.GreenBorder" Color="#1F7A3E"/>
+    <SolidColorBrush x:Key="Brush.GreenShadow" Color="#145A2B"/>
 
-    <SolidColorBrush x:Key="Brush.GreenBorder"  Color="{StaticResource Color.GreenBorder}"/>
-    <SolidColorBrush x:Key="Brush.GreenBase"    Color="{StaticResource Color.GreenBase}"/>
-    <SolidColorBrush x:Key="Brush.OrangeBorder" Color="{StaticResource Color.OrangeBorder}"/>
-    <SolidColorBrush x:Key="Brush.BlueBorder"   Color="{StaticResource Color.BlueBorder}"/>
-    <SolidColorBrush x:Key="Brush.Mine"         Color="{StaticResource Color.Mine}"/>
-    <SolidColorBrush x:Key="Brush.MineBorder"   Color="{StaticResource Color.MineBorder}"/>
-    <SolidColorBrush x:Key="Brush.Question"     Color="#FFD76A"/>
+    <!-- Màu Cam vàng -->
+    <Color x:Key="Color.OrangeLight">#FFD76A</Color>
+    <Color x:Key="Color.OrangeMain">#FFB347</Color>
+    <SolidColorBrush x:Key="Brush.OrangeMain" Color="#FFB347"/>
+    <SolidColorBrush x:Key="Brush.OrangeBorder" Color="#F2705E"/>
+    <SolidColorBrush x:Key="Brush.OrangeShadow" Color="#F2705E"/>
+
+    <!-- Màu Đỏ hồng -->
+    <Color x:Key="Color.RedLight">#FF6B93</Color> <!-- Tự tạo một màu sáng hơn cho gradient -->
+    <Color x:Key="Color.RedMain">#E8396B</Color>
+    <SolidColorBrush x:Key="Brush.RedMain" Color="#E8396B"/>
+    <SolidColorBrush x:Key="Brush.RedBorder" Color="#8E1B4A"/>
+    <SolidColorBrush x:Key="Brush.RedShadow" Color="#8E1B4A"/>
+
+    <!-- Màu Xanh dương -->
+    <Color x:Key="Color.BlueLight">#4FC3F7</Color>
+    <Color x:Key="Color.BlueMain">#2A6FD6</Color>
+    <SolidColorBrush x:Key="Brush.BlueMain" Color="#2A6FD6"/>
+    <SolidColorBrush x:Key="Brush.BlueBorder" Color="#2A6FD6"/>
+    <SolidColorBrush x:Key="Brush.BlueShadow" Color="#2A6FD6"/>
+
+    <!-- Ô Cỏ / Ô Đất -->
+    <SolidColorBrush x:Key="Brush.CellHidden" Color="#4CBB4B"/>
+    <SolidColorBrush x:Key="Brush.CellHiddenBorder" Color="#1F7A3E"/>
+    <SolidColorBrush x:Key="Brush.CellRevealed" Color="#FFF8DC"/> <!-- Màu kem -->
+    <SolidColorBrush x:Key="Brush.CellRevealedBorder" Color="#E3CB94"/>
+
+    <!-- Các màu chữ số cho ô đất -->
     <SolidColorBrush x:Key="Brush.Number1" Color="#2A6FD6"/>
     <SolidColorBrush x:Key="Brush.Number2" Color="#2E9E4F"/>
     <SolidColorBrush x:Key="Brush.Number3" Color="#E8396B"/>
@@ -34,128 +50,59 @@
     <SolidColorBrush x:Key="Brush.Number7" Color="#26344F"/>
     <SolidColorBrush x:Key="Brush.Number8" Color="#7A8196"/>
 
-    <FontFamily x:Key="Font.App">/Resources/Fonts/#Fredoka, Segoe UI</FontFamily>
-
-    
-    <Style TargetType="Window">
-        <Setter Property="FontFamily" Value="{StaticResource Font.App}"/>
-        <Setter Property="Background" Value="{DynamicResource Brush.Background}"/>
-        <Setter Property="Foreground" Value="{DynamicResource Brush.TextPrimary}"/>
-    </Style>
+    <SolidColorBrush x:Key="Brush.Mine" Color="#E8396B"/>
+    <SolidColorBrush x:Key="Brush.Question" Color="#FFD76A"/>
 
 
-    <Style x:Key="CellHidden" TargetType="Button">
-        <Setter Property="Focusable" Value="False"/>
-        <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="Padding" Value="0"/>
+    <!-- 2. QUY TẮC THIẾT KẾ NÚT BẤM (BUTTON STYLE) -->
+    <!-- Base Style cho mọi Button 4 lớp -->
+    <Style x:Key="ButtonBaseStyle" TargetType="Button">
+        <Setter Property="Height" Value="48"/>
+        <Setter Property="Padding" Value="16,0"/>
         <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="Foreground" Value="{StaticResource Brush.Question}"/>
-        <Setter Property="HorizontalContentAlignment" Value="Center"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Grid>
-                        <Border x:Name="Face"
-                                CornerRadius="6"
-                                BorderThickness="2"
-                                Background="{DynamicResource Brush.CellHidden}"
-                                BorderBrush="{DynamicResource Brush.CellHiddenBorder}"/>
-                       
-                        <Border x:Name="Sheen"
-                                CornerRadius="6"
-                                IsHitTestVisible="False"
-                                Opacity="0.55">
-                            <Border.Background>
-                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                    <GradientStop Color="#55FFFFFF" Offset="0"/>
-                                    <GradientStop Color="#00FFFFFF" Offset="0.6"/>
-                                </LinearGradientBrush>
-                            </Border.Background>
-                        </Border>
-                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Sheen" Property="Opacity" Value="1"/>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="Sheen" Property="Opacity" Value="0"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="CellRevealed" TargetType="Button">
-        <Setter Property="Focusable" Value="False"/>
-        <Setter Property="IsHitTestVisible" Value="True"/>
-        <Setter Property="Padding" Value="0"/>
-        <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="Foreground" Value="{DynamicResource Brush.TextPrimary}"/>
-        <Setter Property="HorizontalContentAlignment" Value="Center"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Grid>
-                        <Border CornerRadius="6"
-                                BorderThickness="2"
-                                Background="{DynamicResource Brush.CellRevealed}"
-                                BorderBrush="{DynamicResource Brush.CellRevealedBorder}"/>
-                        <Border CornerRadius="6" IsHitTestVisible="False" Opacity="0.5">
-                            <Border.Background>
-                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                    <GradientStop Color="#00000000" Offset="0.5"/>
-                                    <GradientStop Color="#18000000" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Border.Background>
-                        </Border>
-                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-
-    <Style x:Key="CartoonButtonBase" TargetType="Button">
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Foreground" Value="{StaticResource Brush.TextButton}"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-        <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="FontSize" Value="18"/>
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="Padding" Value="16,0"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Grid>
-                      
-                        <Border CornerRadius="14"
-                                Background="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}"/>
-                        <Border x:Name="Face"
-                                Margin="0,0,0,5"
-                                CornerRadius="14"
-                                BorderThickness="3"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}">
-                            <ContentPresenter Margin="{TemplateBinding Padding}"
-                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              RecognizesAccessKey="True"/>
+                        <!-- Lớp 1: Nền bóng/đế dưới cùng (Shadow/Bottom Base) -->
+                        <Border x:Name="Shadow" 
+                                CornerRadius="14" 
+                                Background="{TemplateBinding Tag}"/> <!-- Tag sẽ chứa Brush của bóng -->
+                        
+                        <!-- Lớp 2: Mặt chính của nút (Face) có chứa Gradient và Viền -->
+                        <Border x:Name="Face" 
+                                Margin="0,0,0,6" 
+                                CornerRadius="14" 
+                                BorderThickness="3" 
+                                Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                ClipToBounds="True">
+                            
+                            <!-- Lớp 3: Hiệu ứng Hover (Lớp phủ trắng mờ) -->
+                            <Grid>
+                                <Border x:Name="HoverOverlay" Background="#20FFFFFF" Visibility="Collapsed"/>
+                                
+                                <!-- Lớp 4: Nội dung -->
+                                <ContentPresenter Margin="{TemplateBinding Padding}" 
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Grid>
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
+                        <!-- FIX LỖI HOVER: Đổi nền mờ bên trong Border đã ClipToBounds -->
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Face" Property="Margin" Value="0,1,0,4"/>
+                            <Setter TargetName="HoverOverlay" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="Face" Property="Margin" Value="0,2,0,4"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="Face" Property="Margin" Value="0,4,0,1"/>
+                            <Setter TargetName="Face" Property="Margin" Value="0,6,0,0"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Opacity" Value="0.5"/>
@@ -166,94 +113,91 @@
         </Setter>
     </Style>
 
-  
-    <Style x:Key="PrimaryButton" TargetType="Button" BasedOn="{StaticResource CartoonButtonBase}">
-        <Setter Property="Height" Value="48"/>
-        <Setter Property="Tag" Value="{StaticResource Brush.GreenBase}"/>
+    <!-- Các Style cụ thể kế thừa ButtonBaseStyle -->
+    <Style x:Key="PrimaryButton" TargetType="Button" BasedOn="{StaticResource ButtonBaseStyle}">
         <Setter Property="BorderBrush" Value="{StaticResource Brush.GreenBorder}"/>
+        <Setter Property="Tag" Value="{StaticResource Brush.GreenShadow}"/> <!-- Tag dùng cho đổ bóng -->
         <Setter Property="Background">
             <Setter.Value>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                     <GradientStop Color="{StaticResource Color.GreenLight}" Offset="0"/>
-                    <GradientStop Color="{StaticResource Color.Green}" Offset="1"/>
+                    <GradientStop Color="{StaticResource Color.GreenMain}" Offset="1"/>
                 </LinearGradientBrush>
             </Setter.Value>
         </Setter>
     </Style>
 
-
-    <Style x:Key="SecondaryButton" TargetType="Button" BasedOn="{StaticResource CartoonButtonBase}">
-        <Setter Property="Height" Value="48"/>
-        <Setter Property="Foreground" Value="#26344F"/>
-        <Setter Property="Tag" Value="{StaticResource Brush.OrangeBorder}"/>
+    <Style x:Key="SecondaryButton" TargetType="Button" BasedOn="{StaticResource ButtonBaseStyle}">
         <Setter Property="BorderBrush" Value="{StaticResource Brush.OrangeBorder}"/>
+        <Setter Property="Tag" Value="{StaticResource Brush.OrangeShadow}"/>
+        <Setter Property="Foreground" Value="{StaticResource Brush.TextPrimary}"/>
         <Setter Property="Background">
             <Setter.Value>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                    <GradientStop Color="{StaticResource Color.YellowLight}" Offset="0"/>
-                    <GradientStop Color="{StaticResource Color.Orange}" Offset="1"/>
+                    <GradientStop Color="{StaticResource Color.OrangeLight}" Offset="0"/>
+                    <GradientStop Color="{StaticResource Color.OrangeMain}" Offset="1"/>
                 </LinearGradientBrush>
             </Setter.Value>
         </Setter>
     </Style>
 
-    <Style x:Key="IconButton" TargetType="Button" BasedOn="{StaticResource CartoonButtonBase}">
-        <Setter Property="Width" Value="40"/>
-        <Setter Property="Height" Value="40"/>
-        <Setter Property="FontSize" Value="16"/>
-        <Setter Property="Padding" Value="0"/>
-        <Setter Property="Tag" Value="{StaticResource Brush.BlueBorder}"/>
+    <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource ButtonBaseStyle}">
+        <Setter Property="BorderBrush" Value="{StaticResource Brush.RedBorder}"/>
+        <Setter Property="Tag" Value="{StaticResource Brush.RedShadow}"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="{StaticResource Color.RedLight}" Offset="0"/>
+                    <GradientStop Color="{StaticResource Color.RedMain}" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="BlueButton" TargetType="Button" BasedOn="{StaticResource ButtonBaseStyle}">
         <Setter Property="BorderBrush" Value="{StaticResource Brush.BlueBorder}"/>
+        <Setter Property="Tag" Value="{StaticResource Brush.BlueShadow}"/>
         <Setter Property="Background">
             <Setter.Value>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                     <GradientStop Color="{StaticResource Color.BlueLight}" Offset="0"/>
-                    <GradientStop Color="#3BA6E8" Offset="1"/>
+                    <GradientStop Color="{StaticResource Color.BlueMain}" Offset="1"/>
                 </LinearGradientBrush>
             </Setter.Value>
         </Setter>
     </Style>
 
-   
-    <Style x:Key="StatBox" TargetType="Border">
-        <Setter Property="Height" Value="56"/>
-        <Setter Property="CornerRadius" Value="14"/>
-        <Setter Property="BorderThickness" Value="3,3,3,5"/>
-        <Setter Property="Padding" Value="12,0"/>
-        <Setter Property="Background" Value="{DynamicResource Brush.Surface}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource Brush.OrangeBorder}"/>
-        <Setter Property="TextElement.FontWeight" Value="Bold"/>
-        <Setter Property="TextElement.FontSize" Value="20"/>
-        <Setter Property="TextElement.Foreground" Value="#26344F"/>
+    <Style x:Key="IconButton" TargetType="Button" BasedOn="{StaticResource BlueButton}">
+        <Setter Property="Width" Value="48"/>
+        <Setter Property="Height" Value="48"/>
+        <Setter Property="Padding" Value="0"/>
     </Style>
 
+    <!-- 3. ÁP DỤNG THÊM MÀU THEO CHỨC NĂNG -->
 
-    <Style x:Key="DifficultyCard" TargetType="RadioButton">
-        <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-        <Setter Property="Foreground" Value="{DynamicResource Brush.TextPrimary}"/>
+    <Style x:Key="CellHidden" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource Brush.CellHidden}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Brush.CellHiddenBorder}"/>
+        <Setter Property="BorderThickness" Value="2,2,2,4"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <!-- Dấu ? màu vàng nổi bật trên nền cỏ xanh -->
+        <Setter Property="Foreground" Value="#FFFF00"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
-        <Setter Property="Margin" Value="4,0"/>
-        <Setter Property="Padding" Value="8,10"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="RadioButton">
-                    <Border x:Name="Card"
-                            CornerRadius="14"
-                            BorderThickness="3,3,3,5"
-                            Padding="{TemplateBinding Padding}"
-                            Background="{DynamicResource Brush.CellRevealed}"
-                            BorderBrush="{DynamicResource Brush.CellRevealedBorder}">
-                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          VerticalAlignment="Center"/>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" ClipToBounds="True">
+                        <Grid>
+                            <Border x:Name="HoverOverlay" Background="#20FFFFFF" Visibility="Collapsed"/>
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Card" Property="BorderBrush" Value="{StaticResource Brush.BlueBorder}"/>
-                        </Trigger>
-                        <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="Card" Property="BorderBrush" Value="{StaticResource Brush.GreenBorder}"/>
-                            <Setter TargetName="Card" Property="Background" Value="{DynamicResource Brush.Surface}"/>
+                            <Setter TargetName="HoverOverlay" Property="Visibility" Value="Visible"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -261,32 +205,84 @@
         </Setter>
     </Style>
 
-  
-    <Style x:Key="TabToggle" TargetType="RadioButton">
-        <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+    <Style x:Key="CellRevealed" TargetType="Button">
+        <!-- Ô đất màu kem -->
+        <Setter Property="Background" Value="{StaticResource Brush.CellRevealed}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Brush.CellRevealedBorder}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Focusable" Value="False"/>
         <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="FontSize" Value="16"/>
-        <Setter Property="Height" Value="40"/>
-        <Setter Property="Margin" Value="4,0"/>
-        <Setter Property="Foreground" Value="{DynamicResource Brush.TextPrimary}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="RadioButton">
-                    <Border x:Name="Pill"
-                            CornerRadius="12"
-                            BorderThickness="3,3,3,4"
-                            Background="{DynamicResource Brush.CellRevealed}"
-                            BorderBrush="{DynamicResource Brush.CellRevealedBorder}">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="Pill" Property="Background" Value="{StaticResource Brush.GreenBorder}"/>
-                            <Setter TargetName="Pill" Property="BorderBrush" Value="{StaticResource Brush.GreenBase}"/>
-                            <Setter Property="Foreground" Value="White"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Khung CardPanel màu Cam vàng -->
+    <Style x:Key="CardPanel" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource Brush.OrangeMain}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Brush.OrangeBorder}"/>
+        <Setter Property="BorderThickness" Value="3"/>
+        <Setter Property="CornerRadius" Value="14"/>
+        <Setter Property="Padding" Value="24"/>
+    </Style>
+
+    <Style x:Key="StatBoxBase" TargetType="Border">
+        <Setter Property="Height" Value="56"/>
+        <Setter Property="CornerRadius" Value="14"/>
+        <Setter Property="BorderThickness" Value="3,3,3,6"/>
+        <Setter Property="Padding" Value="16,0"/>
+    </Style>
+
+    <!-- StatBox màu Cam vàng cho hộp thông báo Thắng/Thua, Số mìn -->
+    <Style x:Key="StatBoxOrange" TargetType="Border" BasedOn="{StaticResource StatBoxBase}">
+        <Setter Property="Background" Value="{StaticResource Brush.OrangeMain}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Brush.OrangeBorder}"/>
+    </Style>
+
+    <!-- StatBox màu Xanh dương cho Khung Đồng hồ đếm giờ -->
+    <Style x:Key="StatBoxBlue" TargetType="Border" BasedOn="{StaticResource StatBoxBase}">
+        <Setter Property="Background" Value="{StaticResource Brush.BlueMain}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Brush.BlueBorder}"/>
+    </Style>
+
+    <Style x:Key="TitleText" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="28"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{StaticResource Brush.TextPrimary}"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+    </Style>
+
+    <Style x:Key="BodyText" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Foreground" Value="{StaticResource Brush.TextPrimary}"/>
+    </Style>
+
+    <!-- Game ProgressBar -->
+    <Style x:Key="GameProgressBar" TargetType="ProgressBar">
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="Minimum" Value="0"/>
+        <Setter Property="Maximum" Value="100"/>
+        <Setter Property="Foreground" Value="{StaticResource Brush.GreenMain}"/>
+        <Setter Property="Background" Value="#33000000"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ProgressBar">
+                    <Border Background="{TemplateBinding Background}" CornerRadius="10" ClipToBounds="True">
+                        <Grid>
+                            <Border x:Name="PART_Track"/>
+                            <Border x:Name="PART_Indicator" Background="{TemplateBinding Foreground}" HorizontalAlignment="Left" CornerRadius="10"/>
+                        </Grid>
+                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
