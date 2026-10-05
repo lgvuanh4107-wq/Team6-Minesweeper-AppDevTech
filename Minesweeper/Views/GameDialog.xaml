@@ -1,0 +1,16 @@
+<Window x:Class="Minesweeper.Views.GameDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{Binding ElementName=TitleText, Path=Text}"
+        SizeToContent="WidthAndHeight" 
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource Brush.Background}">
+    <Border Style="{DynamicResource CardPanel}" Margin="24">
+        <StackPanel Margin="0">
+            <TextBlock x:Name="TitleText" Style="{DynamicResource TitleText}" Margin="0,0,0,16"/>
+            <TextBlock x:Name="MessageText" Style="{DynamicResource BodyText}" Margin="0,0,0,24" TextWrapping="Wrap"/>
+            <UniformGrid x:Name="ButtonsGrid" Rows="1" HorizontalAlignment="Center"/>
+        </StackPanel>
+    </Border>
+</Window>
