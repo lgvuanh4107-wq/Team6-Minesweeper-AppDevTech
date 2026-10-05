@@ -29,12 +29,19 @@ public static class SoundManager
     // Tải âm thanh vào bộ nhớ từ file nếu file tồn tại
     private static void LoadSound(Sound s, string fileName)
     {
-        string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "Sounds", fileName);
-        if (File.Exists(path))
+        try
         {
-            var player = new SoundPlayer(path);
-            player.Load();
-            _players[s] = player;
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "Sounds", fileName);
+            if (File.Exists(path))
+            {
+                var player = new SoundPlayer(path);
+                player.Load();
+                _players[s] = player;
+            }
+        }
+        catch
+        {
+            // Bỏ qua lỗi nếu file thiếu hoặc hỏng
         }
     }
 
