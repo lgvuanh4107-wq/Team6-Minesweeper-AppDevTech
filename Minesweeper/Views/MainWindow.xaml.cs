@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Threading;
 using Minesweeper.Models;
 using Minesweeper.Services;
 
@@ -15,6 +17,13 @@ namespace Minesweeper.Views
         private Button[,] _buttons = null!;
         private bool _endShown;
 
+        private readonly Stopwatch _stopwatch = new();
+        private readonly DispatcherTimer _timer;
+        private bool _paused;
+
+        // Số giây đã chơi, dùng cho bước sau khi gọi LeaderboardService.AddScore
+        public int ElapsedSeconds => (int)_stopwatch.Elapsed.TotalSeconds;
+
         private readonly record struct Pos(int X, int Y);
 
         public MainWindow(GameSession session)
@@ -23,10 +32,16 @@ namespace Minesweeper.Views
             _session = session;
             _board = new Board(session.Difficulty);
 
+            _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(250) };
+            _timer.Tick += (_, _) => UpdateTimerText();
+            _board.GameStarted += OnGameStarted;
+            Closed += (_, _) => _timer.Stop();
+
             TitleTextBlock.Text = $"Độ khó: {session.Difficulty.Name} {session.Difficulty.Width}x{session.Difficulty.Height} • {session.PlayerName}";
 
             InitializeBoardLayout();
             UpdateStats();
+            UpdateTimerText();
         }
 
         private void InitializeBoardLayout()
@@ -76,10 +91,66 @@ namespace Minesweeper.Views
             }
         }
 
+        // ===== Đồng hồ và Pause =====
+
+        private void OnGameStarted()
+        {
+            _stopwatch.Restart();
+            _timer.Start();
+        }
+
+        private void StopClock()
+        {
+            _stopwatch.Stop();
+            _timer.Stop();
+            UpdateTimerText();
+        }
+
+        private void UpdateTimerText()
+        {
+            var t = _stopwatch.Elapsed;
+            TimerTextBlock.Text = $"{(int)t.TotalMinutes:00}:{t.Seconds:00}";
+        }
+
+        private void PauseButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_paused) ResumeGame();
+            else PauseGame();
+        }
+
+        private void ResumeButton_Click(object sender, RoutedEventArgs e) => ResumeGame();
+
+        private void PauseGame()
+        {
+            // Chỉ cho tạm dừng khi ván đang chạy
+            if (!_board.IsStarted || _board.IsOver || _paused) return;
+
+            _paused = true;
+            _stopwatch.Stop();
+            _timer.Stop();
+            PauseOverlay.Visibility = Visibility.Visible;
+            PauseButton.Content = "\uE768";
+            PauseButton.ToolTip = "Tiếp tục";
+        }
+
+        private void ResumeGame()
+        {
+            if (!_paused) return;
+
+            _paused = false;
+            _stopwatch.Start();
+            _timer.Start();
+            PauseOverlay.Visibility = Visibility.Collapsed;
+            PauseButton.Content = "\uE769";
+            PauseButton.ToolTip = "Tạm dừng";
+        }
+
+        // ===== Thao tác trên bàn cờ =====
+
         // Click trái: mở ô, hoặc chord nếu ô đã mở có số
         private void CellButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_board.IsOver) return;
+            if (_board.IsOver || _paused) return;
             var pos = (Pos)((Button)sender).Tag;
             var cell = _board[pos.X, pos.Y];
 
@@ -102,7 +173,7 @@ namespace Minesweeper.Views
         private void CellButton_RightClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             e.Handled = true;
-            if (_board.IsOver) return;
+            if (_board.IsOver || _paused) return;
             var pos = (Pos)((Button)sender).Tag;
 
             var changed = _board.ToggleMark(pos.X, pos.Y);
@@ -118,10 +189,13 @@ namespace Minesweeper.Views
             if (_board.IsOver && !_endShown)
             {
                 _endShown = true;
+                StopClock();
+                PauseButton.IsEnabled = false;
+
                 if (_board.IsWin)
                 {
                     PlaySfx("win");
-                    // TODO (bước sau): hộp thoại thắng, lưu điểm
+                    // TODO (bước sau): hộp thoại thắng, gọi LeaderboardService.AddScore khi _session.SaveScore
                 }
                 else
                 {
