@@ -1,0 +1,74 @@
+<Window x:Class="Minesweeper.Views.NameEntryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Dò Mìn" 
+        Width="460" 
+        SizeToContent="Height"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanMinimize"
+        Background="{DynamicResource Brush.Background}">
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" HorizontalAlignment="Right" Margin="0,0,0,16" Orientation="Horizontal">
+            <Button Click="BtnSound_Click" Content="🔊" Margin="0,0,8,0" Style="{DynamicResource IconButton}"/>
+            <Button Click="BtnTheme_Click" Content="🌙" Style="{DynamicResource IconButton}"/>
+        </StackPanel>
+
+        <TextBlock Grid.Row="1" HorizontalAlignment="Center" Margin="0,0,0,24" Style="{DynamicResource TitleText}" Text="DÒ MÌN"/>
+
+        <StackPanel Grid.Row="2" Margin="0,0,0,8">
+            <TextBlock Margin="0,0,0,8" Style="{DynamicResource BodyText}" Text="Tên người chơi:"/>
+            <TextBox FontSize="16" Height="40" MaxLength="15" Padding="8,0" VerticalContentAlignment="Center" x:Name="TxtPlayerName"/>
+        </StackPanel>
+
+        <TextBlock FontSize="13" FontWeight="Bold" Foreground="#E8396B" Grid.Row="3" Margin="0,0,0,16" Visibility="Collapsed" x:Name="TxtError"/>
+
+        <Grid Grid.Row="4" Margin="0,0,0,24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Margin="0,0,0,8" Style="{DynamicResource BodyText}" Text="Chọn độ khó:"/>
+            
+            <UniformGrid Columns="3" Grid.Row="1">
+                <RadioButton IsChecked="True" Margin="0,0,8,0" Style="{DynamicResource DifficultyCard}" x:Name="RadEasy">
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock FontWeight="Bold" HorizontalAlignment="Center" Text="Dễ"/>
+                        <TextBlock FontSize="12" HorizontalAlignment="Center" Opacity="0.8" Text="9x9"/>
+                        <TextBlock FontSize="12" HorizontalAlignment="Center" Opacity="0.8" Text="10 mìn"/>
+                    </StackPanel>
+                </RadioButton>
+
+                <RadioButton Margin="4,0,4,0" Style="{DynamicResource DifficultyCard}" x:Name="RadMedium">
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock FontWeight="Bold" HorizontalAlignment="Center" Text="Vừa"/>
+                        <TextBlock FontSize="12" HorizontalAlignment="Center" Opacity="0.8" Text="16x16"/>
+                        <TextBlock FontSize="12" HorizontalAlignment="Center" Opacity="0.8" Text="40 mìn"/>
+                    </StackPanel>
+                </RadioButton>
+
+                <RadioButton Margin="8,0,0,0" Style="{DynamicResource DifficultyCard}" x:Name="RadHard">
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock FontWeight="Bold" HorizontalAlignment="Center" Text="Khó"/>
+                        <TextBlock FontSize="12" HorizontalAlignment="Center" Opacity="0.8" Text="30x16"/>
+                        <TextBlock FontSize="12" HorizontalAlignment="Center" Opacity="0.8" Text="99 mìn"/>
+                    </StackPanel>
+                </RadioButton>
+            </UniformGrid>
+        </Grid>
+
+        <StackPanel Grid.Row="5">
+            <Button Click="BtnPlay_Click" Content="VÀO CHƠI" IsDefault="True" Margin="0,0,0,12" Style="{DynamicResource PrimaryButton}"/>
+            <Button Click="BtnPlayNoSave_Click" Content="Chơi không lưu điểm" Margin="0,0,0,12" Style="{DynamicResource SecondaryButton}"/>
+            <Button Click="BtnLeaderboard_Click" Content="Xếp hạng" Style="{DynamicResource SecondaryButton}"/>
+        </StackPanel>
+    </Grid>
+</Window>
