@@ -1,12 +1,79 @@
 <Window x:Class="Minesweeper.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Dò mìn" 
+        Title="Minesweeper" 
         SizeToContent="WidthAndHeight" 
         ResizeMode="CanMinimize" 
         WindowStartupLocation="CenterScreen"
-        Background="{DynamicResource Brush.Background}">
-    <Grid>
-        <TextBlock x:Name="TempText" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="24" Foreground="{DynamicResource Brush.TextPrimary}"/>
-    </Grid>
+        Background="{DynamicResource Brush.Background}"
+        Foreground="{DynamicResource Brush.TextPrimary}">
+    
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Minesweeper;component/Resources/TempStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <StackPanel Margin="16,24,16,24" MinWidth="560">
+        <!-- Hàng 1: Menu, Độ khó, Controls -->
+        <Grid Margin="0,0,0,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <Button Grid.Column="0" Content="&#xE72B;" Style="{DynamicResource IconButton}" ToolTip="Quay lại Menu"/>
+            
+            <TextBlock x:Name="TitleTextBlock" Grid.Column="1" Text="Độ khó: Dễ 9x9 • Phương Linh" Style="{DynamicResource TitleText}" 
+                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            
+            <StackPanel Grid.Column="2" Orientation="Horizontal">
+                <Button Content="&#xE767;" Style="{DynamicResource IconButton}" ToolTip="Âm thanh" Margin="0,0,8,0"/>
+                <Button Content="&#xE706;" Style="{DynamicResource IconButton}" ToolTip="Giao diện sáng/tối" Margin="0,0,8,0"/>
+                <Button Content="Xếp hạng" Style="{DynamicResource SecondaryButton}"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Hàng 2: Stats -->
+        <Grid Margin="0,0,0,24">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Style="{DynamicResource StatBox}" HorizontalAlignment="Left">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="&#xE7C1;" FontFamily="Segoe MDL2 Assets" Foreground="{DynamicResource Brush.Mine}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <TextBlock x:Name="MineCountTextBlock" Text="10" Style="{DynamicResource TitleText}" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+            <Button Grid.Column="1" Content="&#xE72C;" Style="{DynamicResource IconButton}" FontSize="24" ToolTip="New Game" HorizontalAlignment="Center"/>
+
+            <Border Grid.Column="2" Style="{DynamicResource StatBox}" HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="00:00" Style="{DynamicResource TitleText}" VerticalAlignment="Center" Margin="0,0,16,0"/>
+                    <Button Content="&#xE769;" Style="{DynamicResource IconButton}" ToolTip="Tạm dừng"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Hàng 3: Progress -->
+        <StackPanel Margin="0,0,0,24">
+            <TextBlock Text="Dọn bàn cờ 0%" Style="{DynamicResource BodyText}" Margin="0,0,0,8" HorizontalAlignment="Center"/>
+            <ProgressBar Style="{DynamicResource GameProgressBar}" Value="0"/>
+        </StackPanel>
+
+        <!-- Hàng 4: Board -->
+        <Border Style="{DynamicResource CardPanel}" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid>
+                <!-- UniformGrid để chứa các ô cờ -->
+                <UniformGrid x:Name="BoardGrid" />
+            </Grid>
+        </Border>
+    </StackPanel>
 </Window>
