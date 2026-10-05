@@ -2,18 +2,34 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Minesweeper" 
-        Width="460" 
-        SizeToContent="Height"
+        Width="800" 
+        Height="600"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="CanMinimize"
         Background="{DynamicResource Brush.Background}">
 
-    <Border Style="{DynamicResource CardPanel}" Margin="24">
+    <Viewbox Stretch="Uniform">
+        <Border Style="{DynamicResource CardPanel}" Margin="24" Width="460">
         <StackPanel>
             <!-- Logo / Tiêu đề -->
-            <TextBlock Text="CỎ VÀ ĐẤT" 
+            <TextBlock Text="MINESWEEPER" 
                        Style="{DynamicResource TitleText}"
-                       Margin="0,0,0,32"/>
+                       FontWeight="Heavy"
+                       FontSize="48"
+                       HorizontalAlignment="Center"
+                       FontFamily="Segoe UI Black"
+                       Padding="15"
+                       ClipToBounds="False"
+                       Margin="0,0,0,32">
+                <TextBlock.Foreground>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#A6E86B" Offset="0"/>
+                        <GradientStop Color="#4CBB4B" Offset="1"/>
+                    </LinearGradientBrush>
+                </TextBlock.Foreground>
+                <TextBlock.Effect>
+                    <DropShadowEffect BlurRadius="2" Color="#26344F" Opacity="1" ShadowDepth="4"/>
+                </TextBlock.Effect>
+            </TextBlock>
 
             <!-- Nhập tên -->
             <TextBlock Text="Tên người chơi:" Style="{DynamicResource BodyText}" FontWeight="SemiBold" Margin="0,0,0,8"/>
@@ -33,11 +49,11 @@
 
             <!-- Chọn độ khó -->
             <TextBlock Text="Độ khó:" Style="{DynamicResource BodyText}" FontWeight="SemiBold" Margin="0,8,0,12"/>
-            <UniformGrid Columns="3" Margin="0,0,0,32">
-                <RadioButton x:Name="RadEasy" Content="Dễ" IsChecked="True" FontWeight="Bold" FontSize="16" Foreground="{DynamicResource Brush.GreenMain}" Padding="8,0" Margin="0,0,8,0"/>
-                <RadioButton x:Name="RadMedium" Content="Vừa" FontWeight="Bold" FontSize="16" Foreground="{DynamicResource Brush.OrangeMain}" Padding="8,0" Margin="8,0,8,0"/>
-                <RadioButton x:Name="RadHard" Content="Khó" FontWeight="Bold" FontSize="16" Foreground="{DynamicResource Brush.RedMain}" Padding="8,0" Margin="8,0,0,0"/>
-            </UniformGrid>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,32">
+                <RadioButton x:Name="RadEasy" Content="Dễ" IsChecked="True" FontWeight="Bold" FontSize="18" Foreground="#26344F" Padding="8,0" Margin="16,0"/>
+                <RadioButton x:Name="RadMedium" Content="Trung bình" FontWeight="Bold" FontSize="18" Foreground="#26344F" Padding="8,0" Margin="16,0"/>
+                <RadioButton x:Name="RadHard" Content="Khó" FontWeight="Bold" FontSize="18" Foreground="#26344F" Padding="8,0" Margin="16,0"/>
+            </StackPanel>
 
             <!-- Nút VÀO CHƠI -->
             <Button Content="VÀO CHƠI" 
@@ -56,5 +72,6 @@
                     Style="{DynamicResource SecondaryButton}"
                     Click="BtnLeaderboard_Click"/>
         </StackPanel>
-    </Border>
+        </Border>
+    </Viewbox>
 </Window>

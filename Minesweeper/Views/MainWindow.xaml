@@ -2,16 +2,20 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Minesweeper"
-        SizeToContent="WidthAndHeight"
-        ResizeMode="CanMinimize"
         WindowStartupLocation="CenterScreen"
         Background="{DynamicResource Brush.Background}"
         Foreground="{DynamicResource Brush.TextPrimary}">
 
-    <StackPanel Margin="24" MinWidth="580">
+    <Grid Margin="24" MinWidth="580">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
         <!-- Thanh trên cùng -->
         <!-- Đã tăng Margin để không dính viền, căn chỉnh các nút thoáng hơn -->
-        <Grid Margin="16,0,16,32">
+        <Grid Grid.Row="0" Margin="16,0,16,32">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/> <!-- Nút về menu -->
                 <ColumnDefinition Width="*"/>    <!-- TitleText -->
@@ -26,8 +30,13 @@
             <Button Grid.Column="0" Content="&#xE72B;" FontFamily="Segoe MDL2 Assets"
                     Style="{DynamicResource DangerButton}" ToolTip="Về Menu" Margin="0,0,16,0" Width="48" Click="MenuButton_Click"/>
 
-            <TextBlock x:Name="TitleTextBlock" Grid.Column="1" Text="Độ khó" Style="{DynamicResource TitleText}"
-                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Border Grid.Column="1" Background="White" CornerRadius="20" Padding="20,10" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="16,0">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" Color="#4CBB4B" Opacity="0.3" ShadowDepth="3"/>
+                </Border.Effect>
+                <TextBlock x:Name="TitleTextBlock" Text="Độ khó" Style="{DynamicResource TitleText}"
+                           FontFamily="Segoe UI Black" FontWeight="Bold" Foreground="#26344F"/>
+            </Border>
 
             <!-- StatBox số mìn (Màu Cam vàng) -->
             <Border Grid.Column="2" Style="{DynamicResource StatBoxOrange}" Margin="16,0,16,0">
@@ -75,26 +84,28 @@
         </Grid>
 
         <!-- Giữa: Bàn cờ + lớp phủ Pause -->
-        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,32">
-            <!-- Ô cỏ / Ô đất được quản lý trong BoardGrid qua Style CellHidden và CellRevealed -->
-            <!-- Viền bàn cờ dùng CardPanel (Cam vàng) -->
-            <Border Style="{DynamicResource CardPanel}" BorderThickness="4" Padding="16">
-                <UniformGrid x:Name="BoardGrid" />
-            </Border>
+        <Viewbox Grid.Row="1" Stretch="Uniform" Margin="20">
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                <!-- Ô cỏ / Ô đất được quản lý trong BoardGrid qua Style CellHidden và CellRevealed -->
+                <!-- Viền bàn cờ dùng CardPanel (Cam vàng) -->
+                <Border Style="{DynamicResource CardPanel}" BorderThickness="4" Padding="16">
+                    <UniformGrid x:Name="BoardGrid" />
+                </Border>
 
-            <Border x:Name="PauseOverlay" Style="{DynamicResource CardPanel}"
-                    Background="{DynamicResource Brush.Background}" Visibility="Collapsed">
-                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <TextBlock Text="Tạm dừng" Style="{DynamicResource TitleText}"
-                               HorizontalAlignment="Center" Margin="0,0,0,24"/>
-                    <Button x:Name="ResumeButton" Content="Tiếp tục" Style="{DynamicResource PrimaryButton}"
-                            HorizontalAlignment="Center" Click="ResumeButton_Click" MinWidth="120"/>
-                </StackPanel>
-            </Border>
-        </Grid>
+                <Border x:Name="PauseOverlay" Style="{DynamicResource CardPanel}"
+                        Background="{DynamicResource Brush.Background}" Visibility="Collapsed">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock Text="Tạm dừng" Style="{DynamicResource TitleText}"
+                                   HorizontalAlignment="Center" Margin="0,0,0,24"/>
+                        <Button x:Name="ResumeButton" Content="Tiếp tục" Style="{DynamicResource PrimaryButton}"
+                                HorizontalAlignment="Center" Click="ResumeButton_Click" MinWidth="120"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Viewbox>
 
         <!-- Dưới: Progress bar và nút âm thanh -->
-        <Grid Margin="16,0,16,0">
+        <Grid Grid.Row="2" Margin="16,0,16,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
@@ -109,5 +120,5 @@
             <Button Grid.Column="1" Content="&#xE767;" FontFamily="Segoe MDL2 Assets"
                     Style="{DynamicResource BlueButton}" Width="48" Height="48" ToolTip="Bật/Tắt âm thanh" VerticalAlignment="Center"/>
         </Grid>
-    </StackPanel>
+    </Grid>
 </Window>

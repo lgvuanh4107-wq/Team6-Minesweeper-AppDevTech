@@ -226,7 +226,16 @@ namespace Minesweeper.Views
         // Xử lý nút về menu
         private void MenuButton_Click(object sender, RoutedEventArgs e)
         {
-            if (ConfirmAbandon()) Close();
+            if (ConfirmAbandon())
+            {
+                // Mở lại màn hình khởi động
+                var entryWindow = new NameEntryWindow();
+                Application.Current.MainWindow = entryWindow;
+                entryWindow.Show();
+
+                // Đóng cửa sổ chơi game hiện tại
+                this.Close();
+            }
         }
 
         // Xử lý nút chơi lại
