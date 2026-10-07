@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using Minesweeper.Models;
-using Minesweeper.Services;
 
 namespace Minesweeper.Views;
 
@@ -35,8 +34,5 @@ public partial class NameEntryWindow : Window
         Application.Current.Shutdown();
     }
 
-    private void BtnTheme_Click(object sender, RoutedEventArgs e)
-    {
-        ThemeManager.Toggle();
-            }
+    
 }

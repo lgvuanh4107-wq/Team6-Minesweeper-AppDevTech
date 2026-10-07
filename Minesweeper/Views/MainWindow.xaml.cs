@@ -1,10 +1,10 @@
-﻿using Minesweeper.Services;
+﻿using System.Windows.Media;
+using Minesweeper.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Threading;
 using Minesweeper.Models;
 
@@ -21,8 +21,7 @@ namespace Minesweeper.Views
         private readonly DispatcherTimer _timer;
         private bool _paused;
 
-        // Số giây đã chơi, dùng cho bước sau khi gọi LeaderboardService.AddScore
-        public int ElapsedSeconds => (int)_stopwatch.Elapsed.TotalSeconds;
+                public int ElapsedSeconds => (int)_stopwatch.Elapsed.TotalSeconds;
 
         private readonly record struct Pos(int X, int Y);
 
@@ -40,6 +39,7 @@ namespace Minesweeper.Views
             txtPlayerName.Text = $"👤 {session.PlayerName}";
             txtDifficulty.Text = $"⭐ {session.Difficulty.Name} {session.Difficulty.Width}x{session.Difficulty.Height}";
 
+            SoundIcon.Text = SoundManager.IsMuted ? "🔇" : "🔊";
             InitializeBoardLayout();
             UpdateStats();
             UpdateTimerText();
@@ -124,14 +124,13 @@ namespace Minesweeper.Views
 
         private void PauseGame()
         {
-            // Chỉ cho tạm dừng khi ván đang chạy
             if (!_board.IsStarted || _board.IsOver || _paused) return;
 
             _paused = true;
             _stopwatch.Stop();
             _timer.Stop();
             PauseOverlay.Visibility = Visibility.Visible;
-            PauseButton.Content = "\uE768";
+            PauseIcon.Text = "▶";
             PauseButton.ToolTip = "Tiếp tục";
         }
 
@@ -143,7 +142,7 @@ namespace Minesweeper.Views
             _stopwatch.Start();
             _timer.Start();
             PauseOverlay.Visibility = Visibility.Collapsed;
-            PauseButton.Content = "\uE769";
+            PauseIcon.Text = "⏸";
             PauseButton.ToolTip = "Tạm dừng";
         }
 
@@ -352,6 +351,12 @@ namespace Minesweeper.Views
             MineCountTextBlock.Text = _board.FlagsRemaining.ToString();
             ProgressTextBlock.Text = $"Dọn bàn cờ {_board.ProgressPercent}%";
             GameProgressBarControl.Value = _board.ProgressPercent;
+        }
+
+        private void SoundButton_Click(object sender, RoutedEventArgs e)
+        {
+            SoundManager.ToggleMute();
+            SoundIcon.Text = SoundManager.IsMuted ? "🔇" : "🔊";
         }
 
         private static void PlaySfx(string name)

@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using Minesweeper.Services;
 using Minesweeper.Views;
 
 namespace Minesweeper;
