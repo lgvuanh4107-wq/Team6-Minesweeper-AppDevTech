@@ -1,3 +1,3 @@
-namespace Minesweeper.Models;
+﻿namespace Minesweeper.Models;
 
-public record GameSession(string PlayerName, Difficulty Difficulty, bool SaveScore);
+public record GameSession(string PlayerName, Difficulty Difficulty);

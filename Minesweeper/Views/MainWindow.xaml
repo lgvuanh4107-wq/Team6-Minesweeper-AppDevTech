@@ -1,4 +1,4 @@
-<Window x:Class="Minesweeper.Views.MainWindow"
+﻿<Window x:Class="Minesweeper.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Minesweeper"
@@ -23,7 +23,6 @@
                 <ColumnDefinition Width="Auto"/> <!-- StatBox đồng hồ -->
                 <ColumnDefinition Width="Auto"/> <!-- Nút Pause -->
                 <ColumnDefinition Width="Auto"/> <!-- Nút restart -->
-                <ColumnDefinition Width="Auto"/> <!-- Nút xếp hạng -->
             </Grid.ColumnDefinitions>
 
             <!-- Nút Đỏ hồng: Đóng cửa sổ, Về menu -->
@@ -87,10 +86,7 @@
                 </Image>
             </Button>
 
-            <!-- Nút Xếp hạng (Cam vàng) -->
-            <Button Grid.Column="6" Content="&#xE82D;" FontFamily="Segoe MDL2 Assets"
-                    Style="{DynamicResource SecondaryButton}" Width="48" ToolTip="Xếp hạng" Click="LeaderboardButton_Click"/>
-        </Grid>
+            </Grid>
 
         <!-- Giữa: Bàn cờ + lớp phủ Pause -->
         <Viewbox Grid.Row="1" Stretch="Uniform" Margin="20">

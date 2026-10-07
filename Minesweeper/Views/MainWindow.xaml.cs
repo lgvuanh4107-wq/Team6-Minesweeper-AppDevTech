@@ -1,3 +1,4 @@
+﻿using Minesweeper.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -6,7 +7,6 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
 using Minesweeper.Models;
-using Minesweeper.Services;
 
 namespace Minesweeper.Views
 {
@@ -249,44 +249,18 @@ namespace Minesweeper.Views
             }
         }
 
-        // Xử lý mở bảng xếp hạng
-        private void LeaderboardButton_Click(object sender, RoutedEventArgs e)
-        {
-            // bool wasPaused = _paused;
-            // if (_board.IsStarted && !_board.IsOver && !wasPaused) PauseGame();
-
-            // new LeaderboardWindow(_session.Difficulty.Name) { Owner = this }.ShowDialog();
-
-            // if (_board.IsStarted && !_board.IsOver && !wasPaused) ResumeGame();
-            
-            MessageBox.Show("Tính năng Bảng xếp hạng sử dụng Database đang được xây dựng và sẽ ra mắt ở giai đoạn sau!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
-        // Xử lý chiến thắng và lưu điểm
+        // Xử lý chiến thắng
         private void HandleWin()
         {
             RestartButton.Tag = "Win";
-            string rankMsg = "";
-            /*
-            if (_session.SaveScore)
-            {
-                int? rank = LeaderboardService.AddScore(_session.PlayerName, _session.Difficulty.Name, ElapsedSeconds);
-                if (rank.HasValue) rankMsg = $"\nThứ hạng: {rank.Value}";
-            }
-            */
-
-            int res = GameDialog.Show(this, "Chiến thắng!", $"Thời gian: {ElapsedSeconds} giây{rankMsg}", "Chơi lại", "Xếp hạng", "Menu");
+            
+            int res = GameDialog.Show(this, "Chiến thắng!", $"Thời gian: {ElapsedSeconds} giây", "Chơi lại", "Menu");
             if (res == 0)
             {
                 new MainWindow(_session).Show();
                 Close();
             }
             else if (res == 1)
-            {
-                // new LeaderboardWindow(_session.Difficulty.Name) { Owner = this }.ShowDialog();
-                MessageBox.Show("Tính năng Bảng xếp hạng sử dụng Database đang được xây dựng và sẽ ra mắt ở giai đoạn sau!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else if (res == 2)
             {
                 var entryWindow = new NameEntryWindow();
                 Application.Current.MainWindow = entryWindow;
